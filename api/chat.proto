@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+package chat;
+option go_package = "github.com/Qwerty7310/chat-grpc/api/pb;pb";
+
+import "google/protobuf/timestamp.proto";
+
+// gRPC-сервис для чата
+service ChatService {
+  // Клиент отправляет сообщение на сервер
+  rpc SendMessage(MessageToServer) returns (SendAck);
+
+  // Клиент подписывается на поток новых сообщений
+  rpc ChatStream(User) returns (stream Message);
+
+  // Получение истории сообщений
+  rpc GetHistory(HistoryRequest) returns (GetHistoryResponse);
+}
+
+// Пользователь
+message User {
+  string username = 1;
+}
+
+// Полное сообщение (хранится на сервере и рассылается клиентам)
+message Message {
+  string id = 1; // уникальный идентификатор (UUID)
+  string user_id = 2; // UUID автора
+  string username = 3; // автор
+  string text = 4; // текст сообщения
+  google.protobuf.Timestamp created_at = 5; // время создания (серверное)
+}
+
+// Сообщение, которое отправляет клиент
+message MessageToServer {
+  string user_id = 1;
+  string username = 2;
+  string text = 3;
+}
+
+// Ответ на SendMessage
+message SendAck {
+  bool ok = 1; // удалось ли сохранить
+  string id = 2; // id, присвоенный сервером
+  string error = 3; // описание ошибки (если есть)
+}
+
+// Запрос истории
+message HistoryRequest {
+  int32 limit = 1; // сколько последних сообщений вернуть
+}
+
+// Ответ с историей
+message GetHistoryResponse {
+  repeated Message message = 1;
+}
