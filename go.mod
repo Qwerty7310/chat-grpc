@@ -1,3 +1,5 @@
 module chat-grpc
 
-go 1.24
+go 1.23
+
+//go:generate ./scripts/gen-proto.sh
