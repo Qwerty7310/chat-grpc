@@ -5,6 +5,7 @@
 echo "Protoc version: $(protoc --version)"
 echo "Generating gRPC code..."
 
+rm -f api/pb/*
 mkdir -p api/pb
 
 protoc --go_out=. \
