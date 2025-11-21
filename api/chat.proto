@@ -19,7 +19,8 @@ service ChatService {
 
 // Пользователь
 message User {
-  string username = 1;
+  string id = 1;
+  string username = 2;
 }
 
 // Полное сообщение (хранится на сервере и рассылается клиентам)
