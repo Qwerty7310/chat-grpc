@@ -1,0 +1,45 @@
+name: Deploy Chat Server
+
+#on:
+#  push:
+#    branches:
+#      - main
+#    paths:
+#      - 'cmd/server/**'
+#      - 'internal/**'
+#      - 'api/**'
+#      - 'build/server/**'
+#      - 'go.mod'
+#      - 'go.sum'
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t chat-server -f build/server/Dockerfile .
+
+      - name: Copy image to server
+        run: |
+          docker save chat-server | gzip > chat-server.tar.gz
+          scp -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa chat-server.tar.gz ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:/srv/chat/
+
+      - name: Load image and restart on server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            cd /srv/chat
+            gunzip -f chat-server.tar.gz
+            docker load < chat-server.tar
+            docker compose down
+            docker compose up -d --build
