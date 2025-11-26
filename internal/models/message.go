@@ -8,20 +8,20 @@ import (
 )
 
 type Message struct {
-	ID       string
-	UserID   string
-	Username string
-	Text     string
-	CreateAt time.Time
+	ID        string
+	UserID    string
+	Username  string
+	Text      string
+	CreatedAt time.Time
 }
 
 func FromProto(p *pb.Message) *Message {
 	return &Message{
-		ID:       p.Id,
-		UserID:   p.UserId,
-		Username: p.Username,
-		Text:     p.Text,
-		CreateAt: p.CreatedAt.AsTime(),
+		ID:        p.Id,
+		UserID:    p.UserId,
+		Username:  p.Username,
+		Text:      p.Text,
+		CreatedAt: p.CreatedAt.AsTime(),
 	}
 }
 
@@ -31,6 +31,6 @@ func (m *Message) ToProto() *pb.Message {
 		UserId:    m.UserID,
 		Username:  m.Username,
 		Text:      m.Text,
-		CreatedAt: timestamppb.New(m.CreateAt),
+		CreatedAt: timestamppb.New(m.CreatedAt),
 	}
 }

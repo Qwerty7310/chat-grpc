@@ -2,6 +2,8 @@ package server
 
 import (
 	"chat-grpc/api/pb"
+	"chat-grpc/internal/models"
+	"chat-grpc/internal/storage"
 	"context"
 
 	"sync"
@@ -18,15 +20,15 @@ type clientStream struct {
 type ChatService struct {
 	pb.UnimplementedChatServiceServer
 
-	mu       sync.RWMutex
-	clients  map[string]clientStream // userID -> stream
-	messages []*pb.Message           // in-memory history
+	mu      sync.RWMutex
+	clients map[string]clientStream // userID -> stream
+	store   storage.Storage
 }
 
-func NewChatService() *ChatService {
+func NewChatService(store storage.Storage) *ChatService {
 	return &ChatService{
-		clients:  make(map[string]clientStream),
-		messages: make([]*pb.Message, 0),
+		clients: make(map[string]clientStream),
+		store:   store,
 	}
 }
 
@@ -66,25 +68,38 @@ func (s *ChatService) broadcast(msg *pb.Message) {
 }
 
 func (s *ChatService) SendMessage(ctx context.Context, req *pb.MessageToServer) (*pb.SendAck, error) {
-	id := uuid.New().String()
-	now := timestamppb.Now()
-
-	msg := &pb.Message{
-		Id:        id,
-		UserId:    req.UserId,
+	msg := &models.Message{
+		ID:        uuid.New().String(),
+		UserID:    req.UserId,
 		Username:  req.Username,
 		Text:      req.Text,
-		CreatedAt: now,
+		CreatedAt: timestamppb.Now().AsTime(),
 	}
 
-	s.mu.Lock()
-	s.messages = append(s.messages, msg)
-	s.mu.Unlock()
+	if err := s.store.AddMessage(ctx, msg); err != nil {
+		return nil, err
+	}
 
-	s.broadcast(msg)
+	pbMsg := msg.ToProto()
+
+	s.broadcast(pbMsg)
 
 	return &pb.SendAck{
 		Ok: true,
-		Id: id,
+		Id: msg.ID,
 	}, nil
+}
+
+func (s *ChatService) GetHistory(ctx context.Context, req *pb.HistoryRequest) (*pb.GetHistoryResponse, error) {
+	msgs, err := s.store.GetLastMessages(ctx, int(req.Limit))
+	if err != nil {
+		return nil, err
+	}
+
+	res := make([]*pb.Message, 0, len(msgs))
+	for _, m := range msgs {
+		res = append(res, m.ToProto())
+	}
+
+	return &pb.GetHistoryResponse{Message: res}, nil
 }

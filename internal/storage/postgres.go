@@ -2,7 +2,10 @@ package storage
 
 import (
 	"chat-grpc/internal/models"
+	"context"
 	"database/sql"
+
+	_ "github.com/lib/pq"
 )
 
 type PostgresStorage struct {
@@ -17,16 +20,16 @@ func NewPostgresStorage(connStr string) (*PostgresStorage, error) {
 	return &PostgresStorage{db: db}, nil
 }
 
-func (s *PostgresStorage) AddMessage(msg *models.Message) error {
-	_, err := s.db.Exec(`
-		INSERT INTO messages (id, user_id, username, text, created_at, updated_at)
+func (s *PostgresStorage) AddMessage(ctx context.Context, msg *models.Message) error {
+	_, err := s.db.ExecContext(ctx, `
+		INSERT INTO messages (id, user_id, username, text, created_at)
 		VALUES ($1, $2, $3, $4, $5)
-	`, msg.ID, msg.UserID, msg.Username, msg.Text, msg.CreateAt)
+	`, msg.ID, msg.UserID, msg.Username, msg.Text, msg.CreatedAt)
 	return err
 }
 
-func (s *PostgresStorage) GetLastMessages(limit int) ([]*models.Message, error) {
-	rows, err := s.db.Query(`
+func (s *PostgresStorage) GetLastMessages(ctx context.Context, limit int) ([]*models.Message, error) {
+	rows, err := s.db.QueryContext(ctx, `
 		SELECT id, user_id, username, text, created_at
 		FROM messages
 		ORDER BY created_at DESC
@@ -37,13 +40,17 @@ func (s *PostgresStorage) GetLastMessages(limit int) ([]*models.Message, error) 
 	}
 	defer rows.Close()
 
-	var msgs []*models.Message
+	msgs := make([]*models.Message, 0, limit)
 	for rows.Next() {
 		var m models.Message
-		if err := rows.Scan(&m.ID, &m.UserID, &m.Username, &m.Text, &m.CreateAt); err != nil {
+		if err := rows.Scan(&m.ID, &m.UserID, &m.Username, &m.Text, &m.CreatedAt); err != nil {
 			return nil, err
 		}
 		msgs = append(msgs, &m)
 	}
 	return msgs, nil
+}
+
+func (s *PostgresStorage) DB() *sql.DB {
+	return s.db
 }
