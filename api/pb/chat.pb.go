@@ -22,6 +22,178 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type RegisterRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Username      string                 `protobuf:"bytes,1,opt,name=username,proto3" json:"username,omitempty"`
+	Password      string                 `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *RegisterRequest) Reset() {
+	*x = RegisterRequest{}
+	mi := &file_api_chat_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *RegisterRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*RegisterRequest) ProtoMessage() {}
+
+func (x *RegisterRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_chat_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use RegisterRequest.ProtoReflect.Descriptor instead.
+func (*RegisterRequest) Descriptor() ([]byte, []int) {
+	return file_api_chat_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *RegisterRequest) GetUsername() string {
+	if x != nil {
+		return x.Username
+	}
+	return ""
+}
+
+func (x *RegisterRequest) GetPassword() string {
+	if x != nil {
+		return x.Password
+	}
+	return ""
+}
+
+type LoginRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Username      string                 `protobuf:"bytes,1,opt,name=username,proto3" json:"username,omitempty"`
+	Password      string                 `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *LoginRequest) Reset() {
+	*x = LoginRequest{}
+	mi := &file_api_chat_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *LoginRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LoginRequest) ProtoMessage() {}
+
+func (x *LoginRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_api_chat_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LoginRequest.ProtoReflect.Descriptor instead.
+func (*LoginRequest) Descriptor() ([]byte, []int) {
+	return file_api_chat_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *LoginRequest) GetUsername() string {
+	if x != nil {
+		return x.Username
+	}
+	return ""
+}
+
+func (x *LoginRequest) GetPassword() string {
+	if x != nil {
+		return x.Password
+	}
+	return ""
+}
+
+type AuthResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Ok            bool                   `protobuf:"varint,1,opt,name=ok,proto3" json:"ok,omitempty"`
+	Token         string                 `protobuf:"bytes,2,opt,name=token,proto3" json:"token,omitempty"`
+	UserId        string                 `protobuf:"bytes,3,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Error         string                 `protobuf:"bytes,4,opt,name=error,proto3" json:"error,omitempty"` // если ok = false
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AuthResponse) Reset() {
+	*x = AuthResponse{}
+	mi := &file_api_chat_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AuthResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AuthResponse) ProtoMessage() {}
+
+func (x *AuthResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_api_chat_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AuthResponse.ProtoReflect.Descriptor instead.
+func (*AuthResponse) Descriptor() ([]byte, []int) {
+	return file_api_chat_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *AuthResponse) GetOk() bool {
+	if x != nil {
+		return x.Ok
+	}
+	return false
+}
+
+func (x *AuthResponse) GetToken() string {
+	if x != nil {
+		return x.Token
+	}
+	return ""
+}
+
+func (x *AuthResponse) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
+}
+
+func (x *AuthResponse) GetError() string {
+	if x != nil {
+		return x.Error
+	}
+	return ""
+}
+
 // Пользователь
 type User struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
@@ -33,7 +205,7 @@ type User struct {
 
 func (x *User) Reset() {
 	*x = User{}
-	mi := &file_api_chat_proto_msgTypes[0]
+	mi := &file_api_chat_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -45,7 +217,7 @@ func (x *User) String() string {
 func (*User) ProtoMessage() {}
 
 func (x *User) ProtoReflect() protoreflect.Message {
-	mi := &file_api_chat_proto_msgTypes[0]
+	mi := &file_api_chat_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -58,7 +230,7 @@ func (x *User) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use User.ProtoReflect.Descriptor instead.
 func (*User) Descriptor() ([]byte, []int) {
-	return file_api_chat_proto_rawDescGZIP(), []int{0}
+	return file_api_chat_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *User) GetId() string {
@@ -89,7 +261,7 @@ type Message struct {
 
 func (x *Message) Reset() {
 	*x = Message{}
-	mi := &file_api_chat_proto_msgTypes[1]
+	mi := &file_api_chat_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -101,7 +273,7 @@ func (x *Message) String() string {
 func (*Message) ProtoMessage() {}
 
 func (x *Message) ProtoReflect() protoreflect.Message {
-	mi := &file_api_chat_proto_msgTypes[1]
+	mi := &file_api_chat_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -114,7 +286,7 @@ func (x *Message) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Message.ProtoReflect.Descriptor instead.
 func (*Message) Descriptor() ([]byte, []int) {
-	return file_api_chat_proto_rawDescGZIP(), []int{1}
+	return file_api_chat_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *Message) GetId() string {
@@ -164,7 +336,7 @@ type MessageToServer struct {
 
 func (x *MessageToServer) Reset() {
 	*x = MessageToServer{}
-	mi := &file_api_chat_proto_msgTypes[2]
+	mi := &file_api_chat_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -176,7 +348,7 @@ func (x *MessageToServer) String() string {
 func (*MessageToServer) ProtoMessage() {}
 
 func (x *MessageToServer) ProtoReflect() protoreflect.Message {
-	mi := &file_api_chat_proto_msgTypes[2]
+	mi := &file_api_chat_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -189,7 +361,7 @@ func (x *MessageToServer) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use MessageToServer.ProtoReflect.Descriptor instead.
 func (*MessageToServer) Descriptor() ([]byte, []int) {
-	return file_api_chat_proto_rawDescGZIP(), []int{2}
+	return file_api_chat_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *MessageToServer) GetUserId() string {
@@ -225,7 +397,7 @@ type SendAck struct {
 
 func (x *SendAck) Reset() {
 	*x = SendAck{}
-	mi := &file_api_chat_proto_msgTypes[3]
+	mi := &file_api_chat_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -237,7 +409,7 @@ func (x *SendAck) String() string {
 func (*SendAck) ProtoMessage() {}
 
 func (x *SendAck) ProtoReflect() protoreflect.Message {
-	mi := &file_api_chat_proto_msgTypes[3]
+	mi := &file_api_chat_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -250,7 +422,7 @@ func (x *SendAck) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use SendAck.ProtoReflect.Descriptor instead.
 func (*SendAck) Descriptor() ([]byte, []int) {
-	return file_api_chat_proto_rawDescGZIP(), []int{3}
+	return file_api_chat_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *SendAck) GetOk() bool {
@@ -284,7 +456,7 @@ type HistoryRequest struct {
 
 func (x *HistoryRequest) Reset() {
 	*x = HistoryRequest{}
-	mi := &file_api_chat_proto_msgTypes[4]
+	mi := &file_api_chat_proto_msgTypes[7]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -296,7 +468,7 @@ func (x *HistoryRequest) String() string {
 func (*HistoryRequest) ProtoMessage() {}
 
 func (x *HistoryRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_api_chat_proto_msgTypes[4]
+	mi := &file_api_chat_proto_msgTypes[7]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -309,7 +481,7 @@ func (x *HistoryRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HistoryRequest.ProtoReflect.Descriptor instead.
 func (*HistoryRequest) Descriptor() ([]byte, []int) {
-	return file_api_chat_proto_rawDescGZIP(), []int{4}
+	return file_api_chat_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *HistoryRequest) GetLimit() int32 {
@@ -329,7 +501,7 @@ type GetHistoryResponse struct {
 
 func (x *GetHistoryResponse) Reset() {
 	*x = GetHistoryResponse{}
-	mi := &file_api_chat_proto_msgTypes[5]
+	mi := &file_api_chat_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -341,7 +513,7 @@ func (x *GetHistoryResponse) String() string {
 func (*GetHistoryResponse) ProtoMessage() {}
 
 func (x *GetHistoryResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_api_chat_proto_msgTypes[5]
+	mi := &file_api_chat_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -354,7 +526,7 @@ func (x *GetHistoryResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use GetHistoryResponse.ProtoReflect.Descriptor instead.
 func (*GetHistoryResponse) Descriptor() ([]byte, []int) {
-	return file_api_chat_proto_rawDescGZIP(), []int{5}
+	return file_api_chat_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *GetHistoryResponse) GetMessage() []*Message {
@@ -368,7 +540,18 @@ var File_api_chat_proto protoreflect.FileDescriptor
 
 const file_api_chat_proto_rawDesc = "" +
 	"\n" +
-	"\x0eapi/chat.proto\x12\x04chat\x1a\x1fgoogle/protobuf/timestamp.proto\"2\n" +
+	"\x0eapi/chat.proto\x12\x04chat\x1a\x1fgoogle/protobuf/timestamp.proto\"I\n" +
+	"\x0fRegisterRequest\x12\x1a\n" +
+	"\busername\x18\x01 \x01(\tR\busername\x12\x1a\n" +
+	"\bpassword\x18\x02 \x01(\tR\bpassword\"F\n" +
+	"\fLoginRequest\x12\x1a\n" +
+	"\busername\x18\x01 \x01(\tR\busername\x12\x1a\n" +
+	"\bpassword\x18\x02 \x01(\tR\bpassword\"c\n" +
+	"\fAuthResponse\x12\x0e\n" +
+	"\x02ok\x18\x01 \x01(\bR\x02ok\x12\x14\n" +
+	"\x05token\x18\x02 \x01(\tR\x05token\x12\x17\n" +
+	"\auser_id\x18\x03 \x01(\tR\x06userId\x12\x14\n" +
+	"\x05error\x18\x04 \x01(\tR\x05error\"2\n" +
 	"\x04User\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x1a\n" +
 	"\busername\x18\x02 \x01(\tR\busername\"\x9d\x01\n" +
@@ -397,7 +580,10 @@ const file_api_chat_proto_rawDesc = "" +
 	"ChatStream\x12\n" +
 	".chat.User\x1a\r.chat.Message0\x01\x12<\n" +
 	"\n" +
-	"GetHistory\x12\x14.chat.HistoryRequest\x1a\x18.chat.GetHistoryResponseB+Z)github.com/Qwerty7310/chat-grpc/api/pb;pbb\x06proto3"
+	"GetHistory\x12\x14.chat.HistoryRequest\x1a\x18.chat.GetHistoryResponse2u\n" +
+	"\vAuthService\x125\n" +
+	"\bRegister\x12\x15.chat.RegisterRequest\x1a\x12.chat.AuthResponse\x12/\n" +
+	"\x05Login\x12\x12.chat.LoginRequest\x1a\x12.chat.AuthResponseB+Z)github.com/Qwerty7310/chat-grpc/api/pb;pbb\x06proto3"
 
 var (
 	file_api_chat_proto_rawDescOnce sync.Once
@@ -411,27 +597,34 @@ func file_api_chat_proto_rawDescGZIP() []byte {
 	return file_api_chat_proto_rawDescData
 }
 
-var file_api_chat_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
+var file_api_chat_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
 var file_api_chat_proto_goTypes = []any{
-	(*User)(nil),                  // 0: chat.User
-	(*Message)(nil),               // 1: chat.Message
-	(*MessageToServer)(nil),       // 2: chat.MessageToServer
-	(*SendAck)(nil),               // 3: chat.SendAck
-	(*HistoryRequest)(nil),        // 4: chat.HistoryRequest
-	(*GetHistoryResponse)(nil),    // 5: chat.GetHistoryResponse
-	(*timestamppb.Timestamp)(nil), // 6: google.protobuf.Timestamp
+	(*RegisterRequest)(nil),       // 0: chat.RegisterRequest
+	(*LoginRequest)(nil),          // 1: chat.LoginRequest
+	(*AuthResponse)(nil),          // 2: chat.AuthResponse
+	(*User)(nil),                  // 3: chat.User
+	(*Message)(nil),               // 4: chat.Message
+	(*MessageToServer)(nil),       // 5: chat.MessageToServer
+	(*SendAck)(nil),               // 6: chat.SendAck
+	(*HistoryRequest)(nil),        // 7: chat.HistoryRequest
+	(*GetHistoryResponse)(nil),    // 8: chat.GetHistoryResponse
+	(*timestamppb.Timestamp)(nil), // 9: google.protobuf.Timestamp
 }
 var file_api_chat_proto_depIdxs = []int32{
-	6, // 0: chat.Message.created_at:type_name -> google.protobuf.Timestamp
-	1, // 1: chat.GetHistoryResponse.message:type_name -> chat.Message
-	2, // 2: chat.ChatService.SendMessage:input_type -> chat.MessageToServer
-	0, // 3: chat.ChatService.ChatStream:input_type -> chat.User
-	4, // 4: chat.ChatService.GetHistory:input_type -> chat.HistoryRequest
-	3, // 5: chat.ChatService.SendMessage:output_type -> chat.SendAck
-	1, // 6: chat.ChatService.ChatStream:output_type -> chat.Message
-	5, // 7: chat.ChatService.GetHistory:output_type -> chat.GetHistoryResponse
-	5, // [5:8] is the sub-list for method output_type
-	2, // [2:5] is the sub-list for method input_type
+	9, // 0: chat.Message.created_at:type_name -> google.protobuf.Timestamp
+	4, // 1: chat.GetHistoryResponse.message:type_name -> chat.Message
+	5, // 2: chat.ChatService.SendMessage:input_type -> chat.MessageToServer
+	3, // 3: chat.ChatService.ChatStream:input_type -> chat.User
+	7, // 4: chat.ChatService.GetHistory:input_type -> chat.HistoryRequest
+	0, // 5: chat.AuthService.Register:input_type -> chat.RegisterRequest
+	1, // 6: chat.AuthService.Login:input_type -> chat.LoginRequest
+	6, // 7: chat.ChatService.SendMessage:output_type -> chat.SendAck
+	4, // 8: chat.ChatService.ChatStream:output_type -> chat.Message
+	8, // 9: chat.ChatService.GetHistory:output_type -> chat.GetHistoryResponse
+	2, // 10: chat.AuthService.Register:output_type -> chat.AuthResponse
+	2, // 11: chat.AuthService.Login:output_type -> chat.AuthResponse
+	7, // [7:12] is the sub-list for method output_type
+	2, // [2:7] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name
 	2, // [2:2] is the sub-list for extension extendee
 	0, // [0:2] is the sub-list for field type_name
@@ -448,9 +641,9 @@ func file_api_chat_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_api_chat_proto_rawDesc), len(file_api_chat_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   6,
+			NumMessages:   9,
 			NumExtensions: 0,
-			NumServices:   1,
+			NumServices:   2,
 		},
 		GoTypes:           file_api_chat_proto_goTypes,
 		DependencyIndexes: file_api_chat_proto_depIdxs,

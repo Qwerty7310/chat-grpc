@@ -17,6 +17,28 @@ service ChatService {
   rpc GetHistory(HistoryRequest) returns (GetHistoryResponse);
 }
 
+service AuthService {
+  rpc Register(RegisterRequest) returns (AuthResponse);
+  rpc Login(LoginRequest) returns (AuthResponse);
+}
+
+message RegisterRequest {
+  string username = 1;
+  string password = 2;
+}
+
+message LoginRequest {
+  string username = 1;
+  string password = 2;
+}
+
+message AuthResponse {
+  bool ok = 1;
+  string token = 2;
+  string user_id = 3;
+  string error = 4; // если ok = false
+}
+
 // Пользователь
 message User {
   string id = 1;
