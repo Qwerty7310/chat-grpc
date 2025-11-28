@@ -9,14 +9,13 @@ import (
 	"net"
 	"os"
 
-	"github.com/joho/godotenv"
 	"google.golang.org/grpc"
 )
 
 func main() {
-	if err := godotenv.Load(); err != nil {
-		log.Println("No .env file found, using environment variables")
-	}
+	//if err := godotenv.Load(); err != nil {
+	//	log.Println("No .env file found, using environment variables")
+	//}
 
 	pg, err := storage.NewPostgresStorage(os.Getenv("POSTGRES_DSN"))
 	if err != nil {
@@ -24,16 +23,20 @@ func main() {
 	}
 	log.Println("Postgres connected.")
 
-	redis := storage.NewRedisStorage(os.Getenv("REDIS_ADDR"), "chat:messages")
+	redisCache := storage.NewRedisStorage(os.Getenv("REDIS_ADDR"), "chat:messages")
 
-	if err := redis.Ping(context.Background()); err != nil {
+	sessionStore := storage.NewRedisSessionStorage(os.Getenv("REDIS_ADDR"))
+
+	if err := redisCache.Ping(context.Background()); err != nil {
 		log.Fatalf("redis unavailable: %v", err)
 	}
 	log.Println("Redis connected.")
 
-	store := storage.NewHybridStorage(redis, pg)
+	store := storage.NewHybridStorage(redisCache, pg)
 
 	chatService := server.NewChatService(store)
+
+	_ = sessionStore
 
 	lis, err := net.Listen("tcp", ":50051")
 	if err != nil {

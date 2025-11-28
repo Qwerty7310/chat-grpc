@@ -20,6 +20,10 @@ func NewPostgresStorage(connStr string) (*PostgresStorage, error) {
 	return &PostgresStorage{db: db}, nil
 }
 
+func (s *PostgresStorage) DB() *sql.DB {
+	return s.db
+}
+
 func (s *PostgresStorage) AddMessage(ctx context.Context, msg *models.Message) error {
 	_, err := s.db.ExecContext(ctx, `
 		INSERT INTO messages (id, user_id, username, text, created_at)
@@ -51,6 +55,26 @@ func (s *PostgresStorage) GetLastMessages(ctx context.Context, limit int) ([]*mo
 	return msgs, nil
 }
 
-func (s *PostgresStorage) DB() *sql.DB {
-	return s.db
+func (s *PostgresStorage) CreateUser(ctx context.Context, user *models.User) error {
+	_, err := s.db.ExecContext(ctx,
+		`INSERT INTO users (id, username, password_hash, created_at)
+			   VALUES ($1, $2, $3, $4)`,
+		user.ID, user.Username, user.PasswordHash, user.CreatedAt,
+	)
+	return err
+}
+
+func (s *PostgresStorage) GetUserByUsername(ctx context.Context, username string) (*models.User, error) {
+	row := s.db.QueryRowContext(ctx,
+		`SELECT id, username, password_hash, created_at FROM users WHERE username = $1`, username)
+
+	var u models.User
+	if err := row.Scan(&u.ID, &u.Username, &u.PasswordHash, &u.CreatedAt); err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
+		return nil, err
+	}
+
+	return &u, nil
 }
