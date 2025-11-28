@@ -36,6 +36,8 @@ func main() {
 
 	chatService := server.NewChatService(store)
 
+	authService := server.NewAuthService(pg, sessionStore)
+
 	_ = sessionStore
 
 	lis, err := net.Listen("tcp", ":50051")
@@ -45,6 +47,7 @@ func main() {
 
 	s := grpc.NewServer()
 	pb.RegisterChatServiceServer(s, chatService)
+	pb.RegisterAuthServiceServer(s, authService)
 
 	log.Println("gRPC server listening on :50051")
 
