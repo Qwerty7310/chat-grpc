@@ -78,3 +78,17 @@ func (s *PostgresStorage) GetUserByUsername(ctx context.Context, username string
 
 	return &u, nil
 }
+
+func (s *PostgresStorage) GetUserByID(ctx context.Context, id string) (*models.User, error) {
+	row := s.db.QueryRowContext(ctx, `SELECT id, username, password_hash, created_at FROM users WHERE id = $1`, id)
+
+	var u models.User
+	if err := row.Scan(&u.ID, &u.Username, &u.PasswordHash, &u.CreatedAt); err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
+		return nil, err
+	}
+
+	return &u, nil
+}

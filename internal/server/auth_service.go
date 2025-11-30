@@ -13,11 +13,11 @@ import (
 
 type AuthService struct {
 	pb.UnimplementedAuthServiceServer
-	users   *storage.PostgresStorage
+	users   storage.UserStorage
 	session *storage.RedisSessionStorage
 }
 
-func NewAuthService(users *storage.PostgresStorage, session *storage.RedisSessionStorage) *AuthService {
+func NewAuthService(users storage.UserStorage, session *storage.RedisSessionStorage) *AuthService {
 	return &AuthService{
 		users:   users,
 		session: session,

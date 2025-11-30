@@ -5,13 +5,15 @@ option go_package = "github.com/Qwerty7310/chat-grpc/api/pb;pb";
 
 import "google/protobuf/timestamp.proto";
 
+import "google/protobuf/empty.proto";
+
 // gRPC-сервис для чата
 service ChatService {
   // Клиент отправляет сообщение на сервер
   rpc SendMessage(MessageToServer) returns (SendAck);
 
   // Клиент подписывается на поток новых сообщений
-  rpc ChatStream(User) returns (stream Message);
+  rpc ChatStream(google.protobuf.Empty) returns (stream Message);
 
   // Получение истории сообщений
   rpc GetHistory(HistoryRequest) returns (GetHistoryResponse);

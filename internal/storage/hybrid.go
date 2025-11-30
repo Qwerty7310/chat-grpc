@@ -44,3 +44,7 @@ func (s *HybridStorage) GetLastMessages(ctx context.Context, limit int) ([]*mode
 
 	return dbMsgs, nil
 }
+
+func (s *HybridStorage) GetUserByID(ctx context.Context, id string) (*models.User, error) {
+	return s.pg.GetUserByID(ctx, id)
+}

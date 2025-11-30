@@ -9,6 +9,9 @@ import (
 	"sync"
 
 	"github.com/google/uuid"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/emptypb"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
@@ -32,10 +35,25 @@ func NewChatService(store storage.Storage) *ChatService {
 	}
 }
 
-func (s *ChatService) ChatStream(user *pb.User, stream pb.ChatService_ChatStreamServer) error {
+func (s *ChatService) ChatStream(_ *emptypb.Empty, stream pb.ChatService_ChatStreamServer) error {
+	ctx := stream.Context()
+
+	uidValue := ctx.Value(ctxKeyUserID)
+	if uidValue == nil {
+		return status.Error(codes.PermissionDenied, "user not authorized")
+	}
+	uid := uidValue.(string)
+
+	user, err := s.store.GetUserByID(ctx, uid)
+	if err != nil {
+		return status.Error(codes.Internal, "failed to load user")
+	}
+
+	_ = user
+
 	s.mu.Lock()
-	s.clients[user.Id] = clientStream{
-		userId: user.Id,
+	s.clients[uid] = clientStream{
+		userId: uid,
 		stream: stream,
 	}
 	s.mu.Unlock()
@@ -46,7 +64,7 @@ func (s *ChatService) ChatStream(user *pb.User, stream pb.ChatService_ChatStream
 	<-stream.Context().Done()
 
 	s.mu.Lock()
-	delete(s.clients, user.Id)
+	delete(s.clients, uid)
 	s.mu.Unlock()
 
 	return nil
@@ -68,10 +86,21 @@ func (s *ChatService) broadcast(msg *pb.Message) {
 }
 
 func (s *ChatService) SendMessage(ctx context.Context, req *pb.MessageToServer) (*pb.SendAck, error) {
+	uidValue := ctx.Value(ctxKeyUserID)
+	if uidValue == nil {
+		return nil, status.Error(codes.PermissionDenied, "user not authorized")
+	}
+	uid := uidValue.(string)
+
+	user, err := s.store.GetUserByID(ctx, uid)
+	if err != nil {
+		return nil, err
+	}
+
 	msg := &models.Message{
 		ID:        uuid.New().String(),
-		UserID:    req.UserId,
-		Username:  req.Username,
+		UserID:    uid,
+		Username:  user.Username,
 		Text:      req.Text,
 		CreatedAt: timestamppb.Now().AsTime(),
 	}
@@ -81,7 +110,6 @@ func (s *ChatService) SendMessage(ctx context.Context, req *pb.MessageToServer) 
 	}
 
 	pbMsg := msg.ToProto()
-
 	s.broadcast(pbMsg)
 
 	return &pb.SendAck{

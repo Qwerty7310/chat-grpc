@@ -9,6 +9,7 @@ package pb
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	emptypb "google.golang.org/protobuf/types/known/emptypb"
 	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
@@ -540,7 +541,7 @@ var File_api_chat_proto protoreflect.FileDescriptor
 
 const file_api_chat_proto_rawDesc = "" +
 	"\n" +
-	"\x0eapi/chat.proto\x12\x04chat\x1a\x1fgoogle/protobuf/timestamp.proto\"I\n" +
+	"\x0eapi/chat.proto\x12\x04chat\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1bgoogle/protobuf/empty.proto\"I\n" +
 	"\x0fRegisterRequest\x12\x1a\n" +
 	"\busername\x18\x01 \x01(\tR\busername\x12\x1a\n" +
 	"\bpassword\x18\x02 \x01(\tR\bpassword\"F\n" +
@@ -573,12 +574,11 @@ const file_api_chat_proto_rawDesc = "" +
 	"\x0eHistoryRequest\x12\x14\n" +
 	"\x05limit\x18\x01 \x01(\x05R\x05limit\"=\n" +
 	"\x12GetHistoryResponse\x12'\n" +
-	"\amessage\x18\x01 \x03(\v2\r.chat.MessageR\amessage2\xab\x01\n" +
+	"\amessage\x18\x01 \x03(\v2\r.chat.MessageR\amessage2\xb7\x01\n" +
 	"\vChatService\x123\n" +
-	"\vSendMessage\x12\x15.chat.MessageToServer\x1a\r.chat.SendAck\x12)\n" +
+	"\vSendMessage\x12\x15.chat.MessageToServer\x1a\r.chat.SendAck\x125\n" +
 	"\n" +
-	"ChatStream\x12\n" +
-	".chat.User\x1a\r.chat.Message0\x01\x12<\n" +
+	"ChatStream\x12\x16.google.protobuf.Empty\x1a\r.chat.Message0\x01\x12<\n" +
 	"\n" +
 	"GetHistory\x12\x14.chat.HistoryRequest\x1a\x18.chat.GetHistoryResponse2u\n" +
 	"\vAuthService\x125\n" +
@@ -609,25 +609,26 @@ var file_api_chat_proto_goTypes = []any{
 	(*HistoryRequest)(nil),        // 7: chat.HistoryRequest
 	(*GetHistoryResponse)(nil),    // 8: chat.GetHistoryResponse
 	(*timestamppb.Timestamp)(nil), // 9: google.protobuf.Timestamp
+	(*emptypb.Empty)(nil),         // 10: google.protobuf.Empty
 }
 var file_api_chat_proto_depIdxs = []int32{
-	9, // 0: chat.Message.created_at:type_name -> google.protobuf.Timestamp
-	4, // 1: chat.GetHistoryResponse.message:type_name -> chat.Message
-	5, // 2: chat.ChatService.SendMessage:input_type -> chat.MessageToServer
-	3, // 3: chat.ChatService.ChatStream:input_type -> chat.User
-	7, // 4: chat.ChatService.GetHistory:input_type -> chat.HistoryRequest
-	0, // 5: chat.AuthService.Register:input_type -> chat.RegisterRequest
-	1, // 6: chat.AuthService.Login:input_type -> chat.LoginRequest
-	6, // 7: chat.ChatService.SendMessage:output_type -> chat.SendAck
-	4, // 8: chat.ChatService.ChatStream:output_type -> chat.Message
-	8, // 9: chat.ChatService.GetHistory:output_type -> chat.GetHistoryResponse
-	2, // 10: chat.AuthService.Register:output_type -> chat.AuthResponse
-	2, // 11: chat.AuthService.Login:output_type -> chat.AuthResponse
-	7, // [7:12] is the sub-list for method output_type
-	2, // [2:7] is the sub-list for method input_type
-	2, // [2:2] is the sub-list for extension type_name
-	2, // [2:2] is the sub-list for extension extendee
-	0, // [0:2] is the sub-list for field type_name
+	9,  // 0: chat.Message.created_at:type_name -> google.protobuf.Timestamp
+	4,  // 1: chat.GetHistoryResponse.message:type_name -> chat.Message
+	5,  // 2: chat.ChatService.SendMessage:input_type -> chat.MessageToServer
+	10, // 3: chat.ChatService.ChatStream:input_type -> google.protobuf.Empty
+	7,  // 4: chat.ChatService.GetHistory:input_type -> chat.HistoryRequest
+	0,  // 5: chat.AuthService.Register:input_type -> chat.RegisterRequest
+	1,  // 6: chat.AuthService.Login:input_type -> chat.LoginRequest
+	6,  // 7: chat.ChatService.SendMessage:output_type -> chat.SendAck
+	4,  // 8: chat.ChatService.ChatStream:output_type -> chat.Message
+	8,  // 9: chat.ChatService.GetHistory:output_type -> chat.GetHistoryResponse
+	2,  // 10: chat.AuthService.Register:output_type -> chat.AuthResponse
+	2,  // 11: chat.AuthService.Login:output_type -> chat.AuthResponse
+	7,  // [7:12] is the sub-list for method output_type
+	2,  // [2:7] is the sub-list for method input_type
+	2,  // [2:2] is the sub-list for extension type_name
+	2,  // [2:2] is the sub-list for extension extendee
+	0,  // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_api_chat_proto_init() }

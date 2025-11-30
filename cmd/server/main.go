@@ -38,6 +38,8 @@ func main() {
 
 	authService := server.NewAuthService(pg, sessionStore)
 
+	interceptor := server.NewAuthInterceptor(sessionStore)
+
 	_ = sessionStore
 
 	lis, err := net.Listen("tcp", ":50051")
@@ -45,7 +47,10 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
-	s := grpc.NewServer()
+	s := grpc.NewServer(
+		grpc.UnaryInterceptor(interceptor.Unary()),
+		grpc.StreamInterceptor(interceptor.Stream()),
+	)
 	pb.RegisterChatServiceServer(s, chatService)
 	pb.RegisterAuthServiceServer(s, authService)
 
