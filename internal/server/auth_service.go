@@ -83,14 +83,14 @@ func (s *AuthService) Login(ctx context.Context, req *pb.LoginRequest) (*pb.Auth
 	if user == nil {
 		return &pb.AuthResponse{
 			Ok:    false,
-			Error: "invalid username or password",
+			Error: "1 invalid username or password",
 		}, nil
 	}
 
 	if err := bcrypt.CompareHashAndPassword([]byte(user.PasswordHash), []byte(password)); err != nil {
 		return &pb.AuthResponse{
 			Ok:    false,
-			Error: "invalid username or password",
+			Error: "2 invalid username or password",
 		}, nil
 	}
 

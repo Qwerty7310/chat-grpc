@@ -328,9 +328,7 @@ func (x *Message) GetCreatedAt() *timestamppb.Timestamp {
 // Сообщение, которое отправляет клиент
 type MessageToServer struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	Username      string                 `protobuf:"bytes,2,opt,name=username,proto3" json:"username,omitempty"`
-	Text          string                 `protobuf:"bytes,3,opt,name=text,proto3" json:"text,omitempty"`
+	Text          string                 `protobuf:"bytes,1,opt,name=text,proto3" json:"text,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -363,20 +361,6 @@ func (x *MessageToServer) ProtoReflect() protoreflect.Message {
 // Deprecated: Use MessageToServer.ProtoReflect.Descriptor instead.
 func (*MessageToServer) Descriptor() ([]byte, []int) {
 	return file_api_chat_proto_rawDescGZIP(), []int{5}
-}
-
-func (x *MessageToServer) GetUserId() string {
-	if x != nil {
-		return x.UserId
-	}
-	return ""
-}
-
-func (x *MessageToServer) GetUsername() string {
-	if x != nil {
-		return x.Username
-	}
-	return ""
 }
 
 func (x *MessageToServer) GetText() string {
@@ -562,11 +546,9 @@ const file_api_chat_proto_rawDesc = "" +
 	"\busername\x18\x03 \x01(\tR\busername\x12\x12\n" +
 	"\x04text\x18\x04 \x01(\tR\x04text\x129\n" +
 	"\n" +
-	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"Z\n" +
-	"\x0fMessageToServer\x12\x17\n" +
-	"\auser_id\x18\x01 \x01(\tR\x06userId\x12\x1a\n" +
-	"\busername\x18\x02 \x01(\tR\busername\x12\x12\n" +
-	"\x04text\x18\x03 \x01(\tR\x04text\"?\n" +
+	"created_at\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\"%\n" +
+	"\x0fMessageToServer\x12\x12\n" +
+	"\x04text\x18\x01 \x01(\tR\x04text\"?\n" +
 	"\aSendAck\x12\x0e\n" +
 	"\x02ok\x18\x01 \x01(\bR\x02ok\x12\x0e\n" +
 	"\x02id\x18\x02 \x01(\tR\x02id\x12\x14\n" +

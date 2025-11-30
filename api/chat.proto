@@ -58,9 +58,7 @@ message Message {
 
 // Сообщение, которое отправляет клиент
 message MessageToServer {
-  string user_id = 1;
-  string username = 2;
-  string text = 3;
+  string text = 1;
 }
 
 // Ответ на SendMessage
