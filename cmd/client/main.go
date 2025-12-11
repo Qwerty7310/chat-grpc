@@ -66,13 +66,9 @@ func main() {
 		username, _ := reader.ReadString('\n')
 		username = strings.TrimSpace(username)
 
-		fmt.Printf("DEBUG username raw: %q (%v)\n", username, []byte(username))
-
 		fmt.Print("Password: ")
 		password, _ := reader.ReadString('\n')
 		password = strings.TrimSpace(password)
-
-		fmt.Printf("DEBUG password raw: %q (%v)\n", password, []byte(password))
 
 		resp, err := authClient.Login(context.Background(), &pb.LoginRequest{
 			Username: username,
